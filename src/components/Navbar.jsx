@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
   return (
     <nav className="bg-black text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="text-xl font-bold uppercase text-red-600 tracking-wider">CineStream</div>
         <div className="flex gap-4">
           <Link to="/" className="hover:text-orange-500">Home</Link>
