@@ -4,7 +4,7 @@ import { imageBaseUrl } from '../services/api'
 
 const CardComponent = ({item}) => {
   return (
-    <Link to="/">
+    <Link to={`/${item.media_type}/${item.id}`}>
       <div className="relative group transform transition-transform duration-300 hover:scale-[1.08]">
         <img src={`${imageBaseUrl}/${item?.poster_path}`} className="w-full h-full object-cover" alt={item.title} />
         <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-24 flex flex-col items-center">

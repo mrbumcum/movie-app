@@ -23,7 +23,7 @@ const Home = () => {
   
   
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-15">
       <div className="flex items-center">
         <h2 className="text-xl font-bold my-6 md:my-8 lg:my-10">Trending</h2>
         <div className="flex outline-solid rounded-xl mx-4 my-1">
