@@ -2,8 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
-import Movies from './pages/Movies'
-import TVShows from './pages/TVShows'
+import Movies from './pages/Movies/Movies'
+import TVShows from './pages/Shows/TVShows'
 import Search from './pages/Search'
 function App() {
   return (

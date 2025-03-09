@@ -14,3 +14,13 @@ export const fetchTrending = async (timeWindow = 'day') => {
 }
 
 
+// TV SHOWS API ROUTE
+export const fetchDetails = async (type, id) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}?api_key=${apiKey}`
+    )    
+
+    return res.data;
+}
+
+
