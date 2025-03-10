@@ -23,11 +23,21 @@ export const fetchDetails = async (type, id) => {
     return res.data;
 }
 
+// CREDITS API ROUTE
 export const fetchCredits = async (type, id) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${id}/credits?api_key=${apiKey}`
     )
 
     return res.data;
+}
+
+// POPULAR API ROUTE
+export const fetchPopular = async (type) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/popular?api_key=${apiKey}`
+    )
+
+    return res.data.results;
 }
 
