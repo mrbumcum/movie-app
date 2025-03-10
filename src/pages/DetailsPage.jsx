@@ -4,12 +4,14 @@ import { fetchDetails } from '../services/api'
 import { useEffect, useState } from 'react'
 import { imageBaseUrl } from '../services/api'
 import { fetchCredits } from '../services/api'
+import { fetchVideos } from '../services/api'
 
 
 const DetailsPage = () => {
   const { type, id } = useParams();
   const [ details, setDetails ] = useState({});
   const [ credits, setCredits ] = useState({ cast: [] });
+  const [ videos, setVideos ] = useState({});
 
 //   useEffect(() => {
 //     fetchDetails(type, id)
@@ -25,14 +27,37 @@ const DetailsPage = () => {
 useEffect(() => {
     const fetchData = async () => {
         try {
-            const [detailsData, creditsData] = await Promise.all([
+            const [detailsData, creditsData, videosData] = await Promise.all([
                 fetchDetails(type, id),
-                fetchCredits(type, id)
-            ])
+                fetchCredits(type, id),
+                fetchVideos(type, id)
+            ]);
 
             setDetails(detailsData);
             setCredits(creditsData);
+            
+            // Find the first trailer
+            let mainTrailer = null;
+            if (videosData.results && videosData.results.length > 0) {
+                // First try to find an official trailer
+                mainTrailer = videosData.results.find(
+                    video => video.type === "Trailer" && video.official === true
+                );
+                
+                // If no official trailer, get any trailer
+                if (!mainTrailer) {
+                    mainTrailer = videosData.results.find(video => video.type === "Trailer");
+                }
+                
+                // If still no trailer, just use the first video
+                if (!mainTrailer && videosData.results.length > 0) {
+                    mainTrailer = videosData.results[0];
+                }
+            }
+            
+            setVideos({ ...videosData, mainTrailer });
             console.log(creditsData, 'creditsData');
+            console.log(mainTrailer, 'mainTrailer');
 
         } catch (error) {
             console.log(error, 'error');
@@ -71,6 +96,7 @@ useEffect(() => {
   const releaseDate = details?.release_date || details?.first_air_date;
   const voteAverage = details?.vote_average;
 
+  const trailers = videos.results ? videos.results.filter(video => video.type === "Trailer") : [];
 
   return (
     <div className="w-screen relative">
@@ -172,6 +198,45 @@ useEffect(() => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+        <div className='py-7 px-4'>
+            <h2 className="text-2xl font-bold mb-4">Trailer</h2>
+            {videos.mainTrailer ? (
+                <div className="mx-[5px] aspect-video w-auto">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src={`https://www.youtube.com/embed/${videos.mainTrailer.key}`}
+                        title={videos.mainTrailer.name}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            ) : (
+                <p>No trailer available</p>
+            )}
+        </div>
+
+        <div className='pt-1 px-4'>
+          <div className='grid grid-cols-4 gap-4'>
+            {videos.results && videos.results
+              .filter(video => video.type !== "Trailer") // Get non-trailer videos
+              .slice(0, 4) // Limit to only 4 videos
+              .map(video => (
+                <div key={video.id} className="aspect-video w-full">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src={`https://www.youtube.com/embed/${video.key}`}    
+                    title={video.name}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              ))}
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export const fetchDetails = async (type, id) => {
     return res.data;
 }
 
-// CREDITS API ROUTE
+// Movies & Series - CREDITS API ROUTE
 export const fetchCredits = async (type, id) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${id}/credits?api_key=${apiKey}`
@@ -31,6 +31,16 @@ export const fetchCredits = async (type, id) => {
 
     return res.data;
 }
+
+// Movies & Series - VIDEOS API ROUTE
+export const fetchVideos = async (type, id) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}/videos?api_key=${apiKey}`
+    )
+    
+    return res.data;
+}
+
 
 // POPULAR API ROUTE
 export const fetchPopular = async (type) => {
